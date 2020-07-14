@@ -1,15 +1,15 @@
 version: '3'
 services:
+  # mysqlコンテナ
   db:
     image: mysql:5.7.27
-    # なんだこれは？
     restart: always
     volumes:
       - db-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
-  # railsのDocker imageファイル
+  # rails
   backend:
     build: ./backend
     # 左がホストのポート、右がコンテナのポート
@@ -22,14 +22,13 @@ services:
     environment:
       - HOST=${BACKEND_HOST}
       - PORT=${BACKEND_PORT}
-    # このbackendっていうコンテナ立ち上げたら一緒にdbも立ち上がるってことかな？
     depends_on:
       - db
     # コンテナ立ち上げっぱなしにする(docker runの「-it」オプションに当たるもの)
     tty: true
     stdin_open: true
 
-  # nuxtのDocker imageファイル
+  # nuxt
   frontend:
     build: ./frontend
     ports:
@@ -42,7 +41,9 @@ services:
       - HOST=${FRONTEND_HOST}
       - PORT=${FRONTEND_PORT}
     tty: true
-  volumes:
-    db-data:
-      backend-bundle:
-      frontend-node_modules:
+
+# volumesの設定(マウントの設定)
+volumes:
+  db-data:
+  backend-bundle:
+  frontend-node_modules:

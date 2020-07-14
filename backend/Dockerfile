@@ -2,7 +2,6 @@ FROM ruby:2.6.3-alpine
 
 ENV RUNTIME_PACKAGES "mysql-client mysql-dev tzdata nodejs"
 ENV DEV_PACKAGES "build-base curl-dev"
-# ディレクトリをappに設定
 ENV APP_HOME /app
 ENV TZ Asia/Tokyo
 
@@ -15,6 +14,7 @@ ADD Gemfile.lock ${APP_HOME}/Gemfile.lock
 
 RUN apk update \
     && apk upgrade \
+    && apk add --no-cache git \
     && apk add --update --no-cache ${RUNTIME_PACKAGES} \
     && apk add --update --no-cache --virtual=.build-dependencies ${DEV_PACKAGES} \
     && bundle install -j4 \
