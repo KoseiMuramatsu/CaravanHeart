@@ -41,6 +41,8 @@ services:
       - HOST=${FRONTEND_HOST}
       - PORT=${FRONTEND_PORT}
     tty: true
+    depends_on:
+      - backend
 
 # volumesの設定(マウントの設定)
 volumes:
